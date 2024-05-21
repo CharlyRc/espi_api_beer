@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  ubeer-database:
+    container_name: ubeer-database
+    image: postgres:16.3-alpine
+    ports:
+      - '15432:5432'
+    volumes:
+      - ./docker/database/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+  ubeer-api:
+    container_name: ubeer-api
+    image: postgrest/postgrest:v12.0.3
+    depends_on:
+      - ubeer-database
+    ports:
+      - 11000:11000
+    volumes:
+      - ./docker/database/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
